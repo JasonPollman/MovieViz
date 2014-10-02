@@ -1,0 +1,499 @@
+/*
+
+Homework #2 - D3
+ITCS-4121-001
+
+Jason Pollman & Hunain Vhora
+
+*/
+
+/* Import Fonts from Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic);
+
+body {
+	margin: 0 auto;
+	padding: 20px; 
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+
+	color: #262626;
+	background: #ffffff;
+	background: -moz-linear-gradient(top,  #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#f1f1f1), color-stop(51%,#e1e1e1), color-stop(100%,#f6f6f6));
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	background: -o-linear-gradient(top,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	background: -ms-linear-gradient(top,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	background: linear-gradient(to bottom,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 );
+
+
+}
+h1 {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-size: 48px;
+	font-weight: 300;
+
+	text-align: center;
+	text-transform: uppercase;
+
+	margin: 0;
+}
+h2 {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-size: 18px;
+
+	margin: 0 0 10px 0;
+}
+h3 {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-size: 24px;
+
+	margin: 0 0 5px 0;
+}
+h4 {
+	margin: 0;
+}
+h5 {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-size: 14px;
+
+	text-transform: uppercase;
+
+	border-bottom: 1px solid #c7c7c7;
+
+	margin: 5px 0 15px 0;
+	padding-bottom: 5px;
+}
+h6 {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-size: 10px;
+
+	text-transform: uppercase;
+	text-align: center;
+
+	padding: 3px;
+	margin: 0 0 5px 0;
+}
+hr {
+	height: 1px;
+	border: none;
+	background-color: rgba(0, 0, 0, .4);
+}
+text {
+  font: 12px 'Lato', 'Helvetica', sans-serif;
+}
+fieldset {
+	text-align: left;
+
+	padding: 10px;
+	margin: 20px 0;
+
+	border: 1px solid #c7c7c7;
+
+	background-color: #fafafa;
+
+	border-radius: 7px;
+
+	-webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow:    0px 3px 10px 0px rgba(0, 0, 0, 0.2);
+	box-shadow:         0px 3px 10px 0px rgba(0, 0, 0, 0.2);
+}
+fieldset hr {
+	background-color: rgba(0, 0, 0, .2);
+	margin: 10px 0;
+}
+label {
+	cursor: pointer;
+}
+input[type='text'] {
+	width: 152px;
+	text-align: center;
+	font-size: 24px;
+}
+
+/* USEFUL STYLES */
+.nodata {
+	display: none; 
+	white-space: normal;
+}
+.nodata h1 {
+	padding-top: 25%;
+}
+.nodata * {
+	vertical-align: middle;
+	white-space: normal;
+}
+.pull-right { float: right; }
+.pull-left  { float: left;  }
+
+.grayed { color: rgba(0, 0, 0, .6); }
+.grayed-light { color: rgba(0, 0, 0, .4); }
+
+#page-wrapper {
+	width: 100%;
+	max-width: 100%;
+
+	margin: auto;
+}
+#page-title {
+	margin: auto;
+}
+#page-visualization {
+	margin: auto;
+	text-align: center;
+}
+#viz-wrapper {
+	margin: 50px auto 0 auto;
+	text-align: center;
+	white-space: nowrap;
+}
+#misc-info {
+	font-size: 14px;
+	text-align: center;
+	color: rgba(0, 0, 0, .4);;
+}
+#misc-total,
+#misc-count {
+	font-size: 24px;
+	vertical-align: middle;
+	margin-top: -3px;
+	color: rgba(0, 0, 0, .8);;
+}
+#misc-total { margin-right: 20px; }
+
+/* Style for Vis Filters */
+#page-visualization,
+#viz-filters,
+#color-sort {
+	display: inline-block;
+	vertical-align: top;
+
+	margin: 0 10px;
+}
+#color-sort {
+	width: 271px;
+}
+#viz-filters {
+	width: 182px;
+}
+
+/* Style for the Modal Pop-up Menu */
+#context-menu {
+
+	padding: 20px;
+
+	min-width: 250px;
+
+	height: auto;
+	max-height: 500px;
+	
+	background: rgb(255,255,255);
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 56%, rgba(237,237,237,1) 99%, rgba(255,255,255,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(56%,rgba(255,255,255,1)), color-stop(99%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1)));
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 56%,rgba(237,237,237,1) 99%,rgba(255,255,255,1) 100%);
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 56%,rgba(237,237,237,1) 99%,rgba(255,255,255,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 56%,rgba(237,237,237,1) 99%,rgba(255,255,255,1) 100%);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 56%,rgba(237,237,237,1) 99%,rgba(255,255,255,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 );
+
+	-webkit-box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow:    0px 3px 7px 0px rgba(0, 0, 0, 0.6);
+	box-shadow:         0px 3px 7px 0px rgba(0, 0, 0, 0.6);
+
+	border: 1px solid #c7c7c7;
+	border-radius: 10px;
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 99;
+
+	display: none;
+}
+#context-menu .attribute-header {
+	display: inline;
+}
+#context-menu .attribute {
+	border-radius: 10px;
+	padding: 5px;
+	white-space: nowrap;
+}
+#context-menu .attribute.even {
+	background-color: rgba(0, 0, 0, .08);
+}
+#context-menu .attribute div {
+	float: right;
+	white-space: nowrap;
+}
+#context-menu .popularity .attribute-header {
+	display: block;
+}
+#context-menu div.popularity-score {
+	float: none;
+	width: 100%;
+	font-size: 72px;
+	font-weight: bold;
+	text-align: center;
+}
+#context-menu .attribute-header:after {
+	content: ": ";
+}
+
+.attribute.year.odd {
+	background-color: transparent !important;
+}
+
+/* SVG Elements*/
+circle {
+  fill: #9ecae1;
+  stroke: rgba(255, 255, 255, .5);
+  stroke-width: 2px;
+}
+.root.awards,
+.root.year {
+	fill: #238b45;
+}
+.root {
+  stroke-width: 2px;
+}
+.leaf {
+	cursor: pointer;
+	vertical-align: middle;
+	position: relative;
+}
+
+/* For Coloring & Key Items */
+.dark { color: white; }
+.box {
+	padding: 5px;
+	text-transform: uppercase;
+	font-size: 9px;
+}
+#key {
+	margin: 10px;
+	text-align: center;
+}
+.key-item {
+	margin: 0 5px;
+	display: inline-block;
+	width: 45%;
+	vertical-align: top;
+
+	border: 1px solid #c7c7c7;
+
+	padding: 1px;
+}
+
+/* Colorize by Year */
+.year.y0 { 
+	fill: #f7fcf5;
+	background-color: #f7fcf5;
+}
+.year.y1 {
+	fill: #e5f5e0;
+	background-color: #e5f5e0;
+}
+.year.y2 {
+	fill: #c7e9c0;
+	background-color: #c7e9c0;
+}
+.year.y3 {
+	fill: #a1d99b;
+	background-color: #a1d99b;
+}
+.year.y4 {
+	fill: #74c476;
+	background-color: #74c476;
+}
+.year.y5 {
+	fill: #41ab5d;
+	background-color: #41ab5d;
+}
+.year.y6 {
+	fill: #238b45;
+	background-color: #238b45;
+}
+.year.y7 {
+	fill: #006d2c;
+	background-color: #006d2c;
+}
+.year.y8 {
+	fill: #00441b;
+	background-color: #00441b;
+}
+.year.y9 {
+	fill: #002e12;
+	background-color: #002e12;
+}
+.year    {
+	fill: #001207;
+	background-color: #001207;
+}
+
+/* Colorize by Popularity */
+.popularity.p0 { 
+	fill: #f7fbff;
+	background-color: #f7fbff;
+}
+.popularity.p1 {
+	fill: #deebf7;
+	background-color: #deebf7;
+}
+.popularity.p2 {
+	fill: #c6dbef;
+	background-color: #c6dbef;
+}
+.popularity.p3 {
+	fill: #9ecae1;
+	background-color: #9ecae1;
+}
+.popularity.p4 {
+	fill: #6baed6;
+	background-color: #6baed6;
+}
+.popularity.p5 {
+	fill: #4292c6;
+	background-color: #4292c6;
+}
+.popularity.p6 {
+	fill: #2171b5;
+	background-color: #2171b5;
+}
+.popularity.p7 {
+	fill: #08519c;
+	background-color: #08519c;
+}
+.popularity.p8 {
+	fill: #08306b;
+	background-color: #08306b;
+}
+.popularity.p9 {
+	fill: #031b33;
+	background-color: #031b33;
+}
+.popularity    {
+	fill: #01070d;
+	background-color: #01070d;
+}
+
+/* Colorize by Awards */
+.awards.ayes {
+	fill: #f1a340;
+	background-color: #f1a340;
+}
+.awards.ano  {
+	fill: #998ec3;
+	background-color: #998ec3;
+}
+
+
+/* Colorize by Genre (or "Subject") */
+.genre.action {
+	fill: #d53e4f;
+	background-color: #d53e4f;
+}
+.genre.drama {
+	fill: #f46d43;
+	background-color: #f46d43;
+}
+.genre.comedy {
+	fill: #ffffbf;
+	background-color: #ffffbf;
+}
+.genre.horror {
+	fill: #fdae61;
+	background-color: #fdae61;
+}
+.genre.music {
+	fill: #fee08b;
+	background-color: #fee08b;
+}
+.genre.mystery {
+	fill: #e6f598;
+	background-color: #e6f598;
+}
+.genre.science-fiction {
+	fill: #abdda4;
+	background-color: #abdda4;
+}
+.genre.war {
+	fill: #66c2a5;
+	background-color: #66c2a5;
+}
+.genre.westerns {
+	fill: #3288bd;
+	background-color: #3288bd;
+}
+.root {
+  fill: #0570b0;
+  background-color: #0570b0;
+}
+
+/* COLORIZE POPUP GENRES */
+.genre {
+	font-weight: bold;
+}
+.genre-action {
+	color: #d53e4f;
+}
+.genre-drama {
+	color: #f46d43;
+}
+.genre-comedy {
+	color: #ffffbf;
+}
+.genre-horror {
+	color: #fdae61;
+}
+.genre-music {
+	color: #fee08b;
+}
+.genre-mystery {
+	color: #e6f598;
+}
+.genre-science-fiction {
+	color: #abdda4;
+}
+.genre-war {
+	color: #66c2a5;
+}
+.genre-westerns {
+	color: #3288bd;
+}
+
+
+/* COLORIZE POPULARITY SCORES */
+.score-0 {
+	color: #c10000;
+}
+.score-1 {
+	color: #d22a00;
+}
+.score-2 {
+	color: #ec6500;
+}
+.score-3 {
+	color: #ffaa00;
+}
+.score-4 {
+	color: #ffc400;
+}
+.score-5 {
+	color: #f3cc00;
+}
+.score-6 {
+	color: #d3ca00;
+}
+.score-7 {
+	color: #94b300;
+}
+.score-8 {
+	color: #7ca800;
+}
+.score-9 {
+	color: #3d8c00;
+}
+.score-10 {
+	color: #1e7f00;
+}

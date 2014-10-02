@@ -1,0 +1,190 @@
+<!--
+
+Homework #2 - D3
+ITCS-4121-001
+
+Jason Pollman & Hunain Vhora
+
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Movies by Popularity: Jason Pollman &amp; Hunain Vhora</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="script.js" type="text/javascript"></script>
+	</head>
+	<body onload="init();">
+		<div id="page-wrapper">
+			<div id="page-title">
+				<h1>Movies by Popularity: 1920 - 1993</h1>
+        <h5 style="text-align: center; border-bottom: none" class="grayed-light">by Jason Pollman &amp; Hunain Vhora</h5>
+        <div id="misc-info">
+          Total Movies: <span id="misc-total"></span>
+          Movies Showing: <span id="misc-count"></span>
+        </div>
+			</div>
+      <div id="viz-wrapper">
+        <div id="viz-filters">
+          <!-- Genre Filters -->
+          <fieldset id="genre-filters">
+            <h5>Movies by Genre</h5>
+            <input type="checkbox" id="genre-action-checkbox" value="action" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-action-checkbox">Action</label>
+            <br />
+            <input type="checkbox" id="genre-drama-checkbox" value="drama" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-drama-checkbox">Drama</label>
+            <br />
+            <input type="checkbox" id="genre-comedy-checkbox" value="comedy" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-comedy-checkbox">Comedy</label>
+            <br />
+            <input type="checkbox" id="genre-horror-checkbox" value="horror" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-horror-checkbox">Horror</label>
+            <br />
+            <input type="checkbox" id="genre-music-checkbox" value="music" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-music-checkbox">Music</label>
+            <br />
+            <input type="checkbox" id="genre-mystery-checkbox" value="mystery" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-mystery-checkbox">Mystery</label>
+            <br />
+            <input type="checkbox" id="genre-science-fiction-checkbox" value="science fiction" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-science-fiction-checkbox">Science Fiction</label>
+            <br />
+            <input type="checkbox" id="genre-war-checkbox" value="war" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-war-checkbox">War</label>
+            <br />
+            <input type="checkbox" id="genre-westerns-checkbox" value="westerns" class="genre-filter" name="genre-group" checked="checked">
+            <label for="genre-westerns-checkbox">Westerns</label>
+          </fieldset>
+          <!-- Year Fiters -->
+          <fieldset id="year-filters">
+            <h5>Movies by Year</h5>
+            <input type="text" id="year-begin" value="1900" name="year-group">
+            <label for="year-begin">1900</label>
+            <br />
+            <div style="text-align: center; margin: 5px 0;">TO</div>
+            <input type="text" id="year-end" value="2014" name="year-group">
+            <label for="year-end">2014</label>
+            <hr />
+            <input type="button" value="Submit" class="pull-right">
+          </fieldset>
+          <!-- Title Fiter -->
+          <fieldset id="title-filter">
+            <h5>Movies by Title</h5>
+            <input type="text" id="movie-title" value="" name="title-group">
+            <label for="movie-title">Movie Title</label>
+            <hr />
+            <input type="button" value="Submit" class="pull-right">
+          </fieldset>
+          <!-- Awards Fiter -->
+          <fieldset id="awards-filter">
+            <h5>Movies with Awards</h5>
+            <input type="radio" id="awards-all-filter" value="all" name="awards-filter" checked="checked" class="awards-filter">
+            <label for="awards-all-filter">Both</label>
+            <br />
+            <input type="radio" id="awards-yes-filter" value="yes" name="awards-filter" class="awards-filter">
+            <label for="awards-yes-filter">Yes</label>
+            <br />
+            <input type="radio" id="awards-no-filter" value="no" name="awards-filter" class="awards-filter">
+            <label for="awards-no-filter">No</label>
+          </fieldset>
+        </div>
+  			<div id="page-visualization">
+          <div class="nodata">
+            <h1>No movies meet your criteria.</h1>
+            <h3 class="grayed-light">Try playing with some filters to the left to see some movies!</h3>
+          </div>
+          <!-- Visualization Appended Here -->
+  				<div id="context-menu">
+  				</div>
+  			</div>
+        <div id="color-sort">
+          <!-- Colorby Radio Buttons -->
+          <fieldset id="colorby-filter">
+            <h5>Sort Movies By</h5>
+            <input type="radio" id="sortby-popularity" value="popularity" name="sortby" class="sortby" checked="checked" >
+            <label for="sortby-genre">Popularity Score</label>
+            <br />
+            <input type="radio" id="sortby-genre" value="genre" name="sortby" class="sortby">
+            <label for="sortby-genre">Genre</label>
+            <br />
+            <input type="radio" id="sortby-year" value="year" name="sortby" class="sortby">
+            <label for="sortby-year">Year</label>
+            <br />
+            <input type="radio" id="sortby-awards" value="awards" name="sortby" class="sortby">
+            <label for="sortby-awards">Awards</label>
+            <br />
+            <br />
+            <h5>Color Movies By</h5>
+            <input type="radio" id="colorby-popularity" value="popularity" name="colorby" class="colorby">
+            <label for="colorby-genre">Popularity Score</label>
+            <br />
+            <input type="radio" id="colorby-genre" value="genre" name="colorby" checked="checked" class="colorby">
+            <label for="colorby-genre">Genre</label>
+            <br />
+            <input type="radio" id="colorby-year" value="year" name="colorby" class="colorby">
+            <label for="colorby-year">Year</label>
+            <br />
+            <input type="radio" id="colorby-awards" value="awards" name="colorby" class="colorby">
+            <label for="colorby-awards">Awards</label>
+            <br />
+            <br />
+            <h5>Legend</h5>
+            <div id="key">
+            <div>
+              <div class="key-item">
+                <h6>Years</h6>
+                <div class="box year y0"><span>1900's</span></div>
+                <div class="box year y1"><span>1910's</span></div>
+                <div class="box year y2"><span>1920's</span></div>
+                <div class="box year y3"><span>1930's</span></div>
+                <div class="box year y4"><span>1940's</span></div>
+                <div class="box year y5 dark"><span>1950's</span></div>
+                <div class="box year y6 dark"><span>1960's</span></div>
+                <div class="box year y7 dark"><span>1970's</span></div>
+                <div class="box year y8 dark"><span>1980's</span></div>
+                <div class="box year y9 dark"><span>1990's</span></div>
+                <div class="box year dark"><span>2000's +</span></div>
+              </div>
+              <div class="key-item">
+                <h6>Popularity</h6>
+                <div class="box popularity p0"><span>00 - 10</span></div>
+                <div class="box popularity p1"><span>11 - 20</span></div>
+                <div class="box popularity p2"><span>21 - 30</span></div>
+                <div class="box popularity p3"><span>31 - 40</span></div>
+                <div class="box popularity p4"><span>41 - 50</span></div>
+                <div class="box popularity p5 dark"><span>51 - 60</span></div>
+                <div class="box popularity p6 dark"><span>61 - 70</span></div>
+                <div class="box popularity p7 dark"><span>71 - 80</span></div>
+                <div class="box popularity p8 dark"><span>81 - 90</span></div>
+                <div class="box popularity p9 dark"><span>91 - 100</span></div>
+                <div class="box popularity dark"><span>100+</span></div>
+              </div>
+              <br />
+              <br />
+              <div class="key-item">
+                <h6>Genres</h6>
+                <div class="box genre action dark"><span>Action</span></div>
+                <div class="box genre drama dark"><span>Drama</span></div>
+                <div class="box genre comedy"><span>Comedy</span></div>
+                <div class="box genre horror"><span>Horror</span></div>
+                <div class="box genre music"><span>Music</span></div>
+                <div class="box genre mystery"><span>Mystery</span></div>
+                <div class="box genre science-fiction"><span>Science Fiction</span></div>
+                <div class="box genre war dark"><span>War</span></div>
+                <div class="box genre westerns dark"><span>Westerns</span></div>
+              </div>
+              <div class="key-item">
+                <h6>Awards</h6>
+                <div class="box awards ayes dark"><span>Yes</span></div>
+                <div class="box awards ano dark"><span>No</span></div>
+              </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+		</div>
+	</body>
+</html>
